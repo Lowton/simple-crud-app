@@ -1,4 +1,7 @@
 import { createServer } from "http";
+import {config as envConfig } from "dotenv";
+
+envConfig();
 
 const server = createServer((req, res) => {
     res.writeHead(200, { "Content-Type": "application/json" })
@@ -6,6 +9,6 @@ const server = createServer((req, res) => {
     res.end()
 });
 
-server.listen(9000, () => {
+server.listen(process.env.port, () => {
     console.log(`Server running on Port 9000`)
 })
