@@ -20,13 +20,15 @@ export class PersonRepository {
     }
 
     addPerson(person) {
-        person.id = uuid()
-        this.storage.push(person);
+        const id = uuid();
+        this.storage.push({id, ...person});
+        return this.getPerson(id);
     }
 
     updatePerson(person) {
         this.deletePerson(person.id);
         this.storage.push(person);
+        return this.getPerson(person.id);
     }
 
     deletePerson(id) {
