@@ -21,7 +21,7 @@ export class PersonController {
             case METHOD.PUT:
                 return this.handlePersonPutRequest(request, response, personRoute);
             case METHOD.DELETE:
-                return this.handlePersonDeleteRequest(request, response, personRoute);
+                return this.handlePersonDeleteRequest(response, personRoute);
             default:
                 throw new InternalServerError(`${request.method} request does not allowed`);
         }
@@ -76,7 +76,7 @@ export class PersonController {
         }
     }
 
-    handlePersonDeleteRequest(request, response, route) {
+    handlePersonDeleteRequest(response, route) {
         const id = route.split("/")[1];
         if (UUID_PATTERN.test(id)) {
             this.service.deletePerson(id);
