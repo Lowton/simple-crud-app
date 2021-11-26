@@ -14,12 +14,12 @@ export class PersonService {
     }
 
     addPerson(person){
-        this.validatePerson(person);
+        this.validate(person);
         return this.repository.addPerson(person);
     }
 
     updatePerson(id, person){
-        this.validatePerson(person);
+        this.validate(person);
         return this.repository.updatePerson({ id, ...person });
     }
 
@@ -27,24 +27,25 @@ export class PersonService {
         return this.repository.deletePerson(person);
     }
 
-    validatePerson(person) {
+    validate(person) {
         if (!person.name) {
             throw new InvalidDataError("Person should have a name");
         }
         if (typeof person.name !== "string") {
-            throw new InvalidDataError("Person name should be a string");
+            throw new InvalidDataError("Person's name should be a string");
         }
         if (!person.age) {
             throw new InvalidDataError("Person should have an age");
         }
         if (typeof person.age !== "number") {
-            throw new InvalidDataError("Person age should be a number");
+            throw new InvalidDataError("Person's age should be a number");
         }
         if (!person.hobbies) {
-            throw new InvalidDataError("Person should have a hobbies");
+            throw new InvalidDataError("Person should have hobbies");
         }
         if (!Array.isArray(person.hobbies)) {
-            throw new InvalidDataError("Person hobbies should be an array");
+            throw new InvalidDataError("Person's hobbies should be an array");
         }
+        return true;
     }
 }
