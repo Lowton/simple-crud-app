@@ -14,7 +14,7 @@ export class ServerContext {
     }
 
     static getPersonController() {
-        return new PersonController(this.getPersonService());
+        return new PersonController(this.getPersonService(), this.getErrorHandler());
     }
 
     static getPersonService() {
