@@ -1,14 +1,20 @@
 import { createServer } from "http";
-import {config as envConfig } from "dotenv";
+import { config as loadEnvConfig } from "dotenv";
+import { ServerContext } from "./server-context.js";
 
-envConfig();
+loadEnvConfig();
+
+const controller = ServerContext.getController();
+const errorHandler = ServerContext.getErrorHandler();
 
 const server = createServer((req, res) => {
-    res.writeHead(200, { "Content-Type": "application/json" })
-    res.write(JSON.stringify(JSON.stringify({ message: "Hello World!" })))
-    res.end()
+    try {
+        controller.handleRequest(req, res);
+    } catch (error) {
+        errorHandler.handleError(res, error);
+    }
 });
 
 server.listen(process.env.port, () => {
-    console.log(`Server running on Port 9000`)
-})
+    console.log(`Server running on Port ${process.env.port}`);
+});
