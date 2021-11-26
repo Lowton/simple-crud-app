@@ -16,5 +16,8 @@ const server = createServer((req, res) => {
 });
 
 server.listen(process.env.port, () => {
+    if (!process.env.port) {
+        throw new Error("There no port to listen on");
+    }
     console.log(`Server running on Port ${process.env.port}`);
 });
