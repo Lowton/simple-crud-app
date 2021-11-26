@@ -68,7 +68,6 @@ export class PersonController {
         if (UUID_PATTERN.test(id)) {
             request.on("data", (data) => {
                 const person = JSON.parse(data);
-                console.log(person);
                 try {
                     this.successResponse(response, STATUS.CREATED, this.service.updatePerson(id, person));
                 } catch (error) {
