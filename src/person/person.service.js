@@ -18,9 +18,9 @@ export class PersonService {
         return this.repository.addPerson(person);
     }
 
-    updatePerson(person){
+    updatePerson(id, person){
         this.validatePerson(person);
-        return this.repository.updatePerson(person);
+        return this.repository.updatePerson({ id, ...person });
     }
 
     deletePerson(person){
