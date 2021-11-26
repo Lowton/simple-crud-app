@@ -43,37 +43,34 @@ export class PersonController {
     successResponse(response, status, data) {
         response.writeHead(status, { "Content-Type": "application/json" });
         if (!!data) {
-            response.write(JSON.stringify(data));
+            response.end(JSON.stringify(data));
+        } else {
+            response.end();
         }
-        response.end();
     }
 
-    handlePersonPostRequest(request, response, route) {
+    async handlePersonPostRequest(request, response, route) {
         if (route === "") {
-            request.on("data", (data) => {
-                const person = JSON.parse(data);
-                try {
-                    this.successResponse(response, STATUS.CREATED, this.service.addPerson(person));
-                } catch (error) {
-                    this.errorHandler.handleError(response, error);
-                }
-            });
+            const person = await this.getRequestData(request);
+            try {
+                this.successResponse(response, STATUS.CREATED, this.service.addPerson(person));
+            } catch (error) {
+                this.errorHandler.handleError(response, error);
+            }
         } else {
             throw new NotFoundError(`Route ${request.url} that can apply ${request.method} request is not found`);
         }
     }
 
-    handlePersonPutRequest(request, response, route) {
+    async handlePersonPutRequest(request, response, route) {
         const id = route.split("/")[1];
         if (UUID_PATTERN.test(id)) {
-            request.on("data", (data) => {
-                const person = JSON.parse(data);
-                try {
-                    this.successResponse(response, STATUS.CREATED, this.service.updatePerson(id, person));
-                } catch (error) {
-                    this.errorHandler.handleError(response, error);
-                }
-            });
+            const person = await this.getRequestData(request);
+            try {
+                this.successResponse(response, STATUS.OK, this.service.updatePerson(id, person));
+            } catch (error) {
+                this.errorHandler.handleError(response, error);
+            }
         } else {
             throw new InvalidDataError(`${id} is not a valid person ID (UUID)`);
         }
@@ -87,5 +84,17 @@ export class PersonController {
         } else {
             throw new InvalidDataError(`${id} is not a valid person ID (UUID)`);
         }
+    }
+
+    getRequestData(request) {
+        return new Promise(((resolve, reject) => {
+            try {
+                let body = "";
+                request.on("data", (chunk) => body += chunk.toString());
+                request.on("end", () => resolve(JSON.parse(body)));
+            } catch (error) {
+                reject(error);
+            }
+        }));
     }
 }
