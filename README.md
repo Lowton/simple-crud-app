@@ -42,7 +42,7 @@ npm run test
 # run tests with coverage report
 npm run test:coverage
 
-# run e2e tests
+# run e2e tests (shuld be run after server was started)
 npm run test:e2e
 ```
 To build project with webpack
