@@ -36,10 +36,10 @@ npm run prod
 ```
 To run tests:
 ```npm
-# run tests
+# run unit tests
 npm run test
 
-# run tests with coverage report
+# run unit tests with coverage report
 npm run test:coverage
 
 # run e2e tests (shuld be run after server was started)
