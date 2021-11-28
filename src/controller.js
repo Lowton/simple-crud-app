@@ -6,7 +6,7 @@ export class Controller {
     }
 
     handleRequest(request, response) {
-        if (request.url.startsWith('/person')) {
+        if (request.url.startsWith("/person")) {
             this.personController.handleRequest(request, response);
         } else {
             throw new NotFoundError(`Route ${request.url} is not found`);
